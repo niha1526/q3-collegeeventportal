@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusConnect | College Event Portal</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #172033;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #142b52;
+      color: white;
+      padding: 22px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    header h1 {
+      font-size: 25px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 18px;
+      font-weight: bold;
+    }
+
+    .hero {
+      background: linear-gradient(120deg, #173b70, #2878bd);
+      color: white;
+      text-align: center;
+      padding: 65px 20px;
+    }
+
+    .hero h2 {
+      font-size: clamp(28px, 5vw, 42px);
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    main {
+      width: min(1100px, 90%);
+      margin: 35px auto;
+    }
+
+    .section-title {
+      margin-bottom: 18px;
+      color: #173b70;
+    }
+
+    .event-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 22px;
+      margin-bottom: 38px;
+    }
+
+    .event-card {
+      background: white;
+      border-radius: 12px;
+      padding: 22px;
+      border: 1px solid #e0e7f0;
+      box-shadow: 0 5px 15px #142b520d;
+    }
+
+    .event-card h3 {
+      color: #173b70;
+      margin-bottom: 10px;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #e4f1ff;
+      color: #17599a;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .event-card p {
+      margin-bottom: 8px;
+    }
+
+    .event-card a {
+      display: inline-block;
+      margin-top: 8px;
+      background: #1769aa;
+      color: white;
+      text-decoration: none;
+      padding: 9px 14px;
+      border-radius: 6px;
+    }
+
+    .info-panel {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid #e0e7f0;
+      margin-bottom: 25px;
+    }
+
+    .info-panel ul {
+      padding-left: 22px;
+    }
+
+    footer {
+      background: #142b52;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 45px;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 20px 5%;
+      }
+
+      nav a {
+        margin: 0 12px 0 0;
+      }
+
+      .hero {
+        padding: 45px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CampusConnect</h1>
+    <nav>
+      <a href="#events">Events</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#register">Registration</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Discover Campus. Connect. Create.</h2>
+    <p>
+      Explore technical symposiums, hackathons, workshops, cultural festivals,
+      and inter-college competitions happening on campus.
+    </p>
+  </section>
+
+  <main>
+    <section id="events">
+      <h2 class="section-title">Upcoming Events</h2>
+
+      <div class="event-grid">
+        <article class="event-card">
+          <span class="tag">Technical Symposium</span>
+          <h3>TechNova 2026</h3>
+          <p><strong>Date:</strong> 24 October 2026</p>
+          <p><strong>Venue:</strong> Technology Auditorium</p>
+          <p>Present innovative projects and compete in technical challenges.</p>
+          <a href="#register">Registration Details</a>
+        </article>
+
+        <article class="event-card">
+          <span class="tag">Hackathon</span>
+          <h3>CodeStorm</h3>
+          <p><strong>Date:</strong> 29 October 2026</p>
+          <p><strong>Venue:</strong> Computing Lab Block</p>
+          <p>Collaborate with a team to build solutions to real-world problems.</p>
+          <a href="#register">Registration Details</a>
+        </article>
+
+        <article class="event-card">
+          <span class="tag">Workshop</span>
+          <h3>CloudLab Workshop</h3>
+          <p><strong>Date:</strong> 4 November 2026</p>
+          <p><strong>Venue:</strong> Seminar Hall A</p>
+          <p>Learn cloud deployment and modern DevOps practices.</p>
+          <a href="#register">Registration Details</a>
+        </article>
+
+        <article class="event-card">
+          <span class="tag">Cultural Festival</span>
+          <h3>Rhythm Fest</h3>
+          <p><strong>Date:</strong> 10 November 2026</p>
+          <p><strong>Venue:</strong> Open Air Theatre</p>
+          <p>Celebrate music, dance, art, and student creativity.</p>
+          <a href="#register">Registration Details</a>
+        </article>
+
+        <article class="event-card">
+          <span class="tag">Competition</span>
+          <h3>InnovateX</h3>
+          <p><strong>Date:</strong> 15 November 2026</p>
+          <p><strong>Venue:</strong> Innovation Centre</p>
+          <p>Showcase prototypes and compete with student innovators.</p>
+          <a href="#register">Registration Details</a>
+        </article>
+
+        <article class="event-card">
+          <span class="tag">Inter-College</span>
+          <h3>Campus Cup</h3>
+          <p><strong>Date:</strong> 21 November 2026</p>
+          <p><strong>Venue:</strong> University Sports Complex</p>
+          <p>Represent your college in a day of team competitions.</p>
+          <a href="#register">Registration Details</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="schedule" class="info-panel">
+      <h2 class="section-title">Event Schedule</h2>
+      <ul>
+        <li><strong>TechNova:</strong> 9:00 AM – 4:00 PM</li>
+        <li><strong>CodeStorm:</strong> 9:00 AM onwards</li>
+        <li><strong>CloudLab:</strong> 10:00 AM – 1:00 PM</li>
+        <li><strong>Rhythm Fest:</strong> 4:00 PM – 8:00 PM</li>
+        <li><strong>InnovateX:</strong> 9:30 AM – 3:30 PM</li>
+        <li><strong>Campus Cup:</strong> 8:00 AM onwards</li>
+      </ul>
+    </section>
+
+    <section id="register" class="info-panel">
+      <h2 class="section-title">Registration Instructions</h2>
+      <ul>
+        <li>Read the eligibility criteria and event guidelines.</li>
+        <li>Choose an event and contact its faculty coordinator.</li>
+        <li>Complete the official registration form before the deadline.</li>
+        <li>Keep your student ID and registration confirmation available.</li>
+        <li>Check with the event coordinator for participant limits and updates.</li>
+      </ul>
+      <p><strong>Note:</strong> This is a demonstration website. Events and dates
+        are sample data, and registration is not submitted online.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 CampusConnect | College Event Management Portal</p>
+  </footer>
+</body>
+</html>
