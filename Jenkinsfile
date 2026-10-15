@@ -60,7 +60,7 @@ pipeline {
         stage('Push Image') {
             steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-creds',
+                    credentialsId: 'dockerhub-credentials',
                     usernameVariable: 'DOCKERHUB_USER',
                     passwordVariable: 'DOCKERHUB_TOKEN'
                 )]) {
@@ -82,7 +82,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 withCredentials([file(
-                    credentialsId: 'docker-desktop-kubeconfig',
+                    credentialsId: 'kubeconfig',
                     variable: 'KUBECONFIG'
                 )]) {
                     powershell '''
