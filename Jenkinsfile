@@ -49,26 +49,31 @@ pipeline {
         }
 
         stage('Push Image') {
-            steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-credentials',
-                    usernameVariable: 'DOCKERHUB_USER',
-                    passwordVariable: 'DOCKERHUB_TOKEN'
-                )]) {
-                    powershell '''
-                        $image = "$($env:IMAGE):$($env:BUILD_NUMBER)"
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'dockerhub-credentials',
+            usernameVariable: 'DOCKERHUB_USER',
+            passwordVariable: 'DOCKERHUB_TOKEN'
+        )]) {
+            powershell '''
+                $u = $env:DOCKERHUB_USER
+                $t = $env:DOCKERHUB_TOKEN
+                Write-Host "User  : [$u] length=$($u.Length)"
+                Write-Host "Token : starts [$($t.Substring(0,[Math]::Min(9,$t.Length)))] length=$($t.Length)"
 
-                        $env:DOCKERHUB_TOKEN | docker login -u $env:DOCKERHUB_USER --password-stdin
-                        if ($LASTEXITCODE -ne 0) { throw "Docker Hub login failed" }
+                $image = "$($env:IMAGE):$($env:BUILD_NUMBER)"
 
-                        docker push $image
-                        if ($LASTEXITCODE -ne 0) { throw "Docker image push failed" }
+                docker login -u $u -p $t
+                if ($LASTEXITCODE -ne 0) { throw "Docker Hub login failed" }
 
-                        docker logout
-                    '''
-                }
-            }
+                docker push $image
+                if ($LASTEXITCODE -ne 0) { throw "Docker image push failed" }
+
+                docker logout
+            '''
         }
+    }
+}
 
         stage('Deploy to Kubernetes') {
             steps {
