@@ -25,7 +25,7 @@ spec:
             - containerPort: 80
           readinessProbe:
             httpGet:
-              path: /does-not-exist
+              path: /
               port: 80
             initialDelaySeconds: 3
             periodSeconds: 5
