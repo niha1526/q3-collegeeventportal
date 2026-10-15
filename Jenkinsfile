@@ -75,25 +75,23 @@ pipeline {
     }
 }
 
-        stage('Deploy to Kubernetes') {
+                stage('Deploy to Kubernetes') {
             steps {
                 withCredentials([file(
                     credentialsId: 'kubeconfig',
                     variable: 'KUBECONFIG'
                 )]) {
                     powershell '''
-                        kubectl apply -f deployment.yaml
-                        if ($LASTEXITCODE -ne 0) { exit 1 }
-
                         $image = "$($env:IMAGE):$($env:BUILD_NUMBER)"
-                        kubectl set image deployment/college-event-portal "web=$image"
+
+                        (Get-Content deployment.yaml) -replace 'image: niharikarao15/college-event-portal:.*', "image: $image" | kubectl apply -f -
                         if ($LASTEXITCODE -ne 0) { exit 1 }
 
-                        kubectl rollout status deployment/college-event-portal --timeout=120s
+                        kubectl rollout status deployment/college-event-portal --timeout=60s
                         if ($LASTEXITCODE -ne 0) {
-                            Write-Host "Rollout failed; restoring previous revision"
+                            Write-Host "Rollout FAILED - rolling back to previous stable release"
                             kubectl rollout undo deployment/college-event-portal
-                            kubectl rollout status deployment/college-event-portal --timeout=120s
+                            kubectl rollout status deployment/college-event-portal --timeout=60s
                             exit 1
                         }
                     '''
