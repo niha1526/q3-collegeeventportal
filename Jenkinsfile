@@ -23,39 +23,46 @@ pipeline {
             }
         }
 
-        stage('Test Application') {
-            steps {
-                powershell '''
-                    $image = "$($env:IMAGE):$($env:BUILD_NUMBER)"
-                    docker rm -f college-event-ci-test 2>$null
-                    docker run -d --name college-event-ci-test -p 18083:80 $image
-                    if ($LASTEXITCODE -ne 0) { exit 1 }
+        
+stage('Test Application') {
+    steps {
+        powershell '''
+            $image = "$($env:IMAGE):$($env:BUILD_NUMBER)"
 
-                    try {
-                        $ready = $false
-                        for ($i = 0; $i -lt 12; $i++) {
-                            try {
-                                $response = Invoke-WebRequest `
-                                    -Uri "http://localhost:18083" `
-                                    -TimeoutSec 3
-                                if ($response.StatusCode -eq 200) {
-                                    $ready = $true
-                                    break
-                                }
-                            } catch {
-                                Start-Sleep -Seconds 2
-                            }
-                        }
-                        if (-not $ready) {
-                            throw "Website health check failed"
-                        }
-                        Write-Host "Website test passed"
-                    } finally {
-                        docker rm -f college-event-ci-test
-                    }
-                '''
+            docker rm -f college-event-ci-test 2>$null
+            docker run -d --name college-event-ci-test -p 18083:80 $image
+
+            if ($LASTEXITCODE -ne 0) {
+                throw "Failed to start test container"
             }
-        }
+
+            try {
+                $ready = $false
+
+                for ($i = 0; $i -lt 10; $i++) {
+                    docker exec college-event-ci-test sh -c "wget -q -O /dev/null http://127.0.0.1/"
+
+                    if ($LASTEXITCODE -eq 0) {
+                        $ready = $true
+                        break
+                    }
+
+                    Start-Sleep -Seconds 2
+                }
+
+                if (-not $ready) {
+                    throw "Nginx health check failed inside container"
+                }
+
+                Write-Host "Website test passed: Nginx returned a successful response"
+            }
+            finally {
+                docker rm -f college-event-ci-test
+            }
+        '''
+    }
+}
+
 
         stage('Push Image') {
             steps {
