@@ -64,27 +64,37 @@ stage('Test Application') {
 }
 
 
-        stage('Push Image') {
-            steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-credentials',
-                    usernameVariable: 'DOCKERHUB_USER',
-                    passwordVariable: 'DOCKERHUB_TOKEN'
-                )]) {
-                    powershell '''
-                        $env:DOCKERHUB_TOKEN |
-                            docker login -u $env:DOCKERHUB_USER --password-stdin
-                        if ($LASTEXITCODE -ne 0) { exit 1 }
+        
+stage('Push Image') {
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'dockerhub-credentials',
+            usernameVariable: 'DOCKERHUB_USER',
+            passwordVariable: 'DOCKERHUB_TOKEN'
+        )]) {
+            powershell '''
+                $ErrorActionPreference = "Stop"
+                $image = "$($env:IMAGE):$($env:BUILD_NUMBER)"
 
-                        $image = "$($env:IMAGE):$($env:BUILD_NUMBER)"
-                        docker push $image
-                        if ($LASTEXITCODE -ne 0) { exit 1 }
+                $env:DOCKERHUB_TOKEN |
+                    docker login --username $env:DOCKERHUB_USER --password-stdin
 
-                        docker logout
-                    '''
+                if ($LASTEXITCODE -ne 0) {
+                    throw "Docker Hub login failed"
                 }
-            }
+
+                docker push $image
+
+                if ($LASTEXITCODE -ne 0) {
+                    throw "Docker image push failed"
+                }
+
+                docker logout
+            '''
         }
+    }
+}
+
 
         stage('Deploy to Kubernetes') {
             steps {
