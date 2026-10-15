@@ -76,8 +76,56 @@ stage('Push Image') {
                 $ErrorActionPreference = "Stop"
                 $image = "$($env:IMAGE):$($env:BUILD_NUMBER)"
 
-                $env:DOCKERHUB_TOKEN |
-                    docker login --username $env:DOCKERHUB_USER --password-stdin
+                2> $token = $env:DOCKERHUB_TOKEN
+PS C:\Windows\System32> $username = $env:DOCKERHUB_USER
+PS C:\Windows\System32>
+PS C:\Windows\System32> if ([string]::IsNullOrWhiteSpace($token)) {
+>>     throw "Docker Hub token was not received from Jenkins credentials"
+>> }
+Docker Hub token was not received from Jenkins credentials
+At line:2 char:5
++     throw "Docker Hub token was not received from Jenkins
+credentials ...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Docker Hub toke...ins
+    credentials:String) [], RuntimeException
+    + FullyQualifiedErrorId : Docker Hub token was not received from J
+   enkins credentials
+
+PS C:\Windows\System32>
+PS C:\Windows\System32> if ([string]::IsNullOrWhiteSpace($username)) {
+>>     throw "Docker Hub username was not received from Jenkins credentials"
+>> }
+Docker Hub username was not received from Jenkins credentials
+At line:2 char:5
++     throw "Docker Hub username was not received from Jenkins
+credenti ...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Docker Hub user...ins
+    credentials:String) [], RuntimeException
+    + FullyQualifiedErrorId : Docker Hub username was not received fro
+   m Jenkins credentials
+
+PS C:\Windows\System32>
+PS C:\Windows\System32> $token | docker login --username $username --password-stdin
+error: cannot perform an interactive login from a non-TTY device
+PS C:\Windows\System32>
+PS C:\Windows\System32> if ($LASTEXITCODE -ne 0) {
+>>     throw "Docker Hub login failed. Check the Jenkins credential values and token permissions."
+>> }
+Docker Hub login failed. Check the Jenkins credential values and token
+permissions.
+At line:2 char:5
++     throw "Docker Hub login failed. Check the Jenkins credential
+valu ...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Docker Hub logi...en
+   permissions.:String) [], RuntimeException
+    + FullyQualifiedErrorId : Docker Hub login failed. Check the Jenki
+   ns credential values and token permissions.
+
+PS C:\Windows\System32>
+PS C:\Windows\System32>
 
                 if ($LASTEXITCODE -ne 0) {
                     throw "Docker Hub login failed"
